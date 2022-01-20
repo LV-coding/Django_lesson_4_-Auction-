@@ -2,6 +2,18 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    TODO
+    <div class="con_group">
+    {% if auctions %}
+        {% for auction in auctions %}
+         <div class="container">
+            <div><strong>{{ auction.name }}</strong></div>
+            <div class="container_about">{{ auction.about }}</div>
+            <div>{{ auction.price }} $</div>
+            <div>Created {{ auction.created_date }}</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        Oops... Auctions have not yet been created...
+    {% endif %}
+    </div>
 {% endblock %}

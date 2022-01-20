@@ -1,5 +1,28 @@
 body {
     padding: 10px;
-    background-color: rgb(77, 77, 77);
-    color: white;
+    background-color: rgb(241, 234, 234);
+    color: black;
+}
+
+.container {
+    height: 400px;
+    width: 300px;
+    border: 2px solid black;
+    padding: 3px;
+    border-radius: 15px;
+    margin-top: 15px;
+    margin-left: 15px;
+    background-color: thistle;
+}
+
+.con_group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container_about {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
