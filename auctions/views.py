@@ -3,9 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
 from .models import Auction, User
-
+import collections
 
 def index(request):
     auctions = Auction.objects.all()
@@ -64,3 +63,20 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+def auction_view(request, id):
+    auction = Auction.objects.get(id=id)
+    return render(request, "auctions/auction.html", {
+        "auction" : auction
+    })
+
+def all_categories(request):
+    categories_list = []
+    categories = Auction.objects.all()
+    for i in categories:                            # подумати як оптимізувати...
+        if i.category not in categories_list:
+            categories_list.append(i.category)
+    return render(request, "auctions/category.html", {
+        "categories_list": categories_list
+    })

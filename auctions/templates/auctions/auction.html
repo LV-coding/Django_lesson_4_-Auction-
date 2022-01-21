@@ -1,0 +1,15 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+<div class="name">{{ auction.name}}</div>
+<div>Category: <a href="{% url 'index'  %}">{{ auction.category}}</a></div>
+<div>About: {{ auction.about}}</div>
+<div class="price">Price: {{ auction.price}}$</div>
+<div>Created {{ auction.created_date}}</div>
+<div>By author {{ auction.author}}</div>
+
+
+
+{% endblock %}

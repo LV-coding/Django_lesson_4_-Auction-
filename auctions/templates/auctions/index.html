@@ -1,15 +1,21 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    <form method="post">
+        {% csrf_token %}
+        <input typy="" name="search_by_category">
+    </form>
     <h2>Active Listings</h2>
-    <div class="con_group">
+    <div class="con_group">   
     {% if auctions %}
         {% for auction in auctions %}
-         <div class="container">
-            <div><strong>{{ auction.name }}</strong></div>
+        
+        <div class="container">
+            <div class="name">{{ auction.name }}</div>
             <div class="container_about">{{ auction.about }}</div>
-            <div>{{ auction.price }} $</div>
+            <div class="price">{{ auction.price }}$</div>
             <div>Created {{ auction.created_date }}</div>
+            <a href="{% url 'auction' auction.id %}">view details</a>
         </div>
         {% endfor %}
     {% else %}
