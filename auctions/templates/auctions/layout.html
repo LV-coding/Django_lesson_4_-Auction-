@@ -35,6 +35,13 @@
                     <a class="nav-link" href="{% url 'register' %}">Register</a>
                 </li>
             {% endif %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'addauction' %}">Create new auction</a>
+            </li>                
+            {% else %}
+
+            {% endif %}
         </ul>
         <hr>
         {% block body %}

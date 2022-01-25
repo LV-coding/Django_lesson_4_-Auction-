@@ -4,12 +4,26 @@
 
 
 <div class="name">{{ auction.name}}</div>
-<div>Category: <a href="{% url 'index'  %}">{{ auction.category}}</a></div>
+<div>Category: <a href="{% url 'categorysearch' auction.category %}">{{ auction.category}}</a></div>
 <div>About: {{ auction.about}}</div>
 <div class="price">Price: {{ auction.price}}$</div>
 <div>Created {{ auction.created_date}}</div>
-<div>By author {{ auction.author}}</div>
+<div class="author">By {{ auction.author}}</div>
 
+<form action="{% url 'addcomment' auction.id  %}">
+    <input type="submit" value="Add new comment" class="btn btn-primary">
+</form>
+
+{% if auction_comment %}
+    Comments:
+    {% for comment in  auction_comment %}
+    <div class="conteiner_comment">
+        <div class="author">{{comment.author_comment}} says:</div>
+        <div class="text_comment">"{{comment.text_comment}}"</div>
+        <div>at {{comment.created_date_comment}}</div>
+    </div>
+    {% endfor %}
+{% endif %}
 
 
 {% endblock %}

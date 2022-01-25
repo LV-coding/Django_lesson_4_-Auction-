@@ -1,12 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<h2>Active Categories</h2>
-    {% for category in categories_list %}
-    <a href="{% url 'categorysearch' category  %}">{{ category }}</a>
-    {% endfor %}
-
-<h2>Active Listings</h2>
+<h4>Active listings in category {{ name }}</h4>
     <div class="con_group">   
     {% if auctions %}
         {% for auction in auctions %}

@@ -1,15 +1,24 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import Auction, User
+from .models import Auction, User, Comment
 import collections
+from . import util
+from .forms import AuctionForm, AuctionComment
+from django.contrib.auth.decorators import login_required
 
 def index(request):
-    auctions = Auction.objects.all()
+    auction_s = Auction.objects.all()
+    auctions = []
+    for i in auction_s:
+        auctions.append(i)
+    auctions.sort (key=lambda auction: auction.created_date, reverse=True)
+    categories_list = util.get_category()
     return render(request, "auctions/index.html", {
-        "auctions" : auctions
+        "auctions" : auctions,
+        "categories_list": categories_list
     })
 
 
@@ -67,16 +76,64 @@ def register(request):
 
 def auction_view(request, id):
     auction = Auction.objects.get(id=id)
+    auction_comm = auction.auction_comment.all()
+    auction_comment = []
+    for i in auction_comm:
+        auction_comment.append(i)
+    auction_comment.sort (key=lambda comment: comment.created_date_comment, reverse=True)
     return render(request, "auctions/auction.html", {
-        "auction" : auction
+        "auction" : auction,
+        "auction_comment":auction_comment
     })
 
+@login_required
+def add_new_comment(request, id):
+    auction = Auction.objects.get(id=id)
+    if request.method == "POST":
+        form = AuctionComment(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.author_comment = request.user
+            new_comment.auction_comment = auction
+            new_comment.save()
+            return HttpResponseRedirect(reverse("auction", args=(id, )))
+    else:
+        form = AuctionComment()  
+    return render(request, "auctions/addcomment.html", {
+        "form":form
+    })   
+
 def all_categories(request):
-    categories_list = []
-    categories = Auction.objects.all()
-    for i in categories:                            # подумати як оптимізувати...
-        if i.category not in categories_list:
-            categories_list.append(i.category)
+    categories_list = util.get_category()
     return render(request, "auctions/category.html", {
         "categories_list": categories_list
+    })
+
+
+def choose_category(request, name):
+    auctions = Auction.objects.all()
+    res = []
+    for i in auctions:
+        if i.category == name:
+            res.append(i)
+    return render(request, "auctions/categorysearch.html", {
+        "auctions": res,
+        "name":name
+    })
+
+
+@login_required
+def add_new_auction(request):
+    if request.method == "POST":
+        form = AuctionForm(request.POST)
+        if form.is_valid():
+            auction = form
+            auction.instance.author = request.user
+            auction.save()
+            return HttpResponseRedirect(reverse("index"))
+            
+    else:
+        form = AuctionForm()
+    return render(request, "auctions/addauction.html", {
+        "form":form
     })
