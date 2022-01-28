@@ -60,3 +60,13 @@ body {
     font-size: 14px;
     font-weight: lighter;
 }
+
+.active {
+    color: green;
+    font-weight: bold;
+}
+
+.deactive {
+    color: red;
+    font-weight: bold;
+}

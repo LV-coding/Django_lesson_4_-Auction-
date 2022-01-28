@@ -4,7 +4,7 @@
 <h2>Active Categories</h2>
     {% for category in categories_list %}
     <a href="{% url 'categorysearch' category  %}">{{ category }}</a>
-    {% endfor %}
+    {% endfor %} 
 
 <h2>Active Listings</h2>
     <div class="con_group">   
@@ -15,7 +15,13 @@
             <div class="name">{{ auction.name }}</div>
             <div class="container_about">{{ auction.about }}</div>
             <div class="price">{{ auction.price }}$</div>
-            <div>Created {{ auction.created_date }}</div>
+            <div>Created: {{ auction.created_date }}</div>
+            <div>Status: {% if auction.status %}
+                <div class="active">Active</div>
+                {% else %}
+                <div class="deactive">Deactive</div>
+                {% endif %}
+            </div>
             <a href="{% url 'auction' auction.id %}">view details</a>
         </div>
         {% endfor %}

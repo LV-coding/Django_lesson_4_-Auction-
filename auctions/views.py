@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import Auction, User, Comment
+from .models import Auction, User, Comment, Watchlist
 import collections
 from . import util
 from .forms import AuctionForm, AuctionComment
@@ -137,3 +137,48 @@ def add_new_auction(request):
     return render(request, "auctions/addauction.html", {
         "form":form
     })
+
+@login_required         
+def watchlist(request, id):
+    searchuser = User.objects.get(id=id)
+    #userwatchlist = searchuser.authorswatchlist.all()
+    userwatchlist = Watchlist.objects.all().filter(author_watchlist=searchuser)
+
+    if id == request.user.id: 
+        return render(request, "auctions/mywatchlist.html", {
+            "userwatchlist":userwatchlist
+        })
+    else:
+        return HttpResponseRedirect(reverse("index"))
+
+@login_required 
+def add_to_watchlist(request, id):
+    auction = Auction.objects.get(id=id)
+
+    userwatchlist, created = Watchlist.objects.get_or_create(author_watchlist=request.user)
+    if auction in userwatchlist.auctions_list.all():
+        userwatchlist.auctions_list.remove(auction)
+    else:
+        userwatchlist.auctions_list.add(auction)
+    userwatchlist = Watchlist.objects.all()
+    return HttpResponseRedirect(reverse("index"))
+        
+
+
+
+"""
+product = Product.objects.get(id=id)
+obj, created = UserWishlist.objects.get_or_create(user=request.user)
+if product in obj.products.all():
+    obj.products.remove(product)
+else:
+    obj.products.add(product)
+"""
+
+
+
+"""    if request.method == "POST":
+        form = request.POST
+        au = form['q1']
+        if au == "Add for my watchlist":
+"""

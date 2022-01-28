@@ -38,7 +38,10 @@
             {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'addauction' %}">Create new auction</a>
-            </li>                
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'mywatchlist' user.id %}">Watchlist</a>
+            </li>                 
             {% else %}
 
             {% endif %}

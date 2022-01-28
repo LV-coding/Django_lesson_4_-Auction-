@@ -9,8 +9,20 @@
 <div class="price">Price: {{ auction.price}}$</div>
 <div>Created {{ auction.created_date}}</div>
 <div class="author">By {{ auction.author}}</div>
+<div>Status: {% if auction.status %}
+    <div class="active">Active</div>
+    {% else %}
+    <div class="deactive">Deactive</div>
+    {% endif %}
+</div>
+{% if user.is_authenticated %}
+<form  action="{% url 'addtowatchlist' auction.id %}">
+    <input type="submit" value="Add for my watchlist" class="btn btn-primary" name="q1">
+</form>
+{% else %}
+{% endif %}
 
-<form action="{% url 'addcomment' auction.id  %}">
+<form action="{% url 'addcomment' auction.id %}">
     <input type="submit" value="Add new comment" class="btn btn-primary">
 </form>
 
@@ -23,7 +35,6 @@
         <div>at {{comment.created_date_comment}}</div>
     </div>
     {% endfor %}
+{% else %}
 {% endif %}
-
-
 {% endblock %}

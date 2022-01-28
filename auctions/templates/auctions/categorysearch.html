@@ -12,6 +12,12 @@
             <div class="price">{{ auction.price }}$</div>
             <div>Created {{ auction.created_date }}</div>
             <a href="{% url 'auction' auction.id %}">view details</a>
+            <div>Status: {% if auction.status %}
+                <div class="active">Active</div>
+                {% else %}
+                <div class="deactive">Deactive</div>
+                {% endif %}
+            </div>
         </div>
         {% endfor %}
     {% else %}
