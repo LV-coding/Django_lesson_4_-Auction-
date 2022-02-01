@@ -1,30 +1,22 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-{% if user.is_authenticated %}
-{% else %}
-You must be logged in to use all features.
-{% endif %}
-<h2>Active Categories</h2>
-    {% for category in categories_list %}
-    <a href="{% url 'categorysearch' category  %}" >{{ category }}</a>
-    {% endfor %} 
-    <br>
-<h2>Active Listings</h2>
-    <div class="con_group">   
+
+<h2>Deactive Listings</h2>
+    <div class="con_group">
+{% if user.is_authenticated %}   
     {% if auctions %}
         {% for auction in auctions %}
         
         <div class="container">
             <div style="text-align: center;">{% if auction.image %} 
-                    <img src="{{ auction.image.url }}" style="max-height:250px; max-width:290px; padding:2px;" alt="{{ auction.title_image }}">
-                    {% else %}
-                    {{ auction.title_image }}
-                    {% endif %}
-            </div>
+                <img src="{{ auction.image.url }}" style="max-height:250px; max-width:290px; padding:2px;" alt="{{ auction.title_image }}">
+                {% else %}
+                {{ auction.title_image }}
+                {% endif %}
+                </div>
             <div class="name">{{ auction.name }}</div>
             <div class="container_about">{{ auction.about }}</div>
-            <div class="price">Price {{ auction.price }}$</div>
             <div>Created: {{ auction.created_date }}</div>
             <div>Status: {% if auction.status %}
                 <a href="{% url 'index' %}" class="active"> Active</a>
@@ -39,4 +31,7 @@ You must be logged in to use all features.
         Oops... Auctions have not yet been created...
     {% endif %}
     </div>
+{% else %}
+You must be logged in!
+{% endif %}
 {% endblock %}

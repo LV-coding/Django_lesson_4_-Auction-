@@ -5,10 +5,10 @@ body {
 }
 
 .container {
-    height: 400px;
+    height: 450px;
     width: 300px;
     border: 2px solid black;
-    padding: 3px;
+    padding: 4px;
     border-radius: 15px;
     margin: 20px;
     background-color: thistle;
@@ -70,3 +70,23 @@ body {
     color: red;
     font-weight: bold;
 }
+
+.active:hover {
+    color: black;
+}
+
+.deactive:hover {
+    color: black;
+}
+
+.action_button {
+    display: flex;
+    flex-wrap: wrap;   
+}
+    
+.btn {
+    float: left;
+}
+
+
+

@@ -2,7 +2,30 @@
 
 {% block body %}
 <h4>Watchlist</h4>
-{% for i in userwatchlist  %}
-{{ i }}
+<div class="con_group"> 
+{% for auction in userwatchlist  %}
+<div class="container">
+    <div style="text-align: center;">
+        {% if auction.auctions_list.image %} 
+        <img src="{{ auction.auctions_list.image.url }}" style="max-height:250px; max-width:290px; padding:2px;" alt="{{ auction.auctions_list.title_image }}">
+        {% else %}
+        {{ auction.auctions_list.title_image }}
+        {% endif %}
+    </div>
+    <div class="name">{{ auction.auctions_list.name }}</div>
+    <div class="container_about">{{ auction.auctions_list.about }}</div>
+    <div class="price">Price {{ auction.auctions_list.price }}$</div>
+    <div>Created: {{ auction.auctions_list.created_date }}</div>
+    <div>Status: {% if auction.auctions_list.status %}
+        <a href="{% url 'index' %}" class="active"> Active</a>
+        {% else %}
+        <a href="{% url 'deactive' %}" class="deactive"> Deactive</a>
+        {% endif %}
+    </div>
+    <a href="{% url 'auction' auction.auctions_list.id %}">view details</a>
+</div>
+{% empty %}
+It's empty
 {% endfor %}
+</div>
 {% endblock %}

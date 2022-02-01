@@ -2,11 +2,13 @@
 
 {% block body %}
 
-    <h2>Add new auction</h2>
+    <h4>Add new comment</h4>
 
-    <form  method="POST">
+    <form  method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-            {{ form.as_p}}
+        <table>
+            {{ form.as_table}}
+        </table>
         <input type="submit" value="Save" class="btn btn-primary">
     </form>
 

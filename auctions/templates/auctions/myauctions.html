@@ -1,26 +1,17 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-{% if user.is_authenticated %}
-{% else %}
-You must be logged in to use all features.
-{% endif %}
-<h2>Active Categories</h2>
-    {% for category in categories_list %}
-    <a href="{% url 'categorysearch' category  %}" >{{ category }}</a>
-    {% endfor %} 
-    <br>
-<h2>Active Listings</h2>
+
+<h4>My auctions</h4>
     <div class="con_group">   
-    {% if auctions %}
         {% for auction in auctions %}
         
         <div class="container">
             <div style="text-align: center;">{% if auction.image %} 
-                    <img src="{{ auction.image.url }}" style="max-height:250px; max-width:290px; padding:2px;" alt="{{ auction.title_image }}">
-                    {% else %}
-                    {{ auction.title_image }}
-                    {% endif %}
+                <img src="{{ auction.image.url }}" style="max-height:250px; max-width:290px; padding:2px;" alt="{{ auction.title_image }}">
+                {% else %}
+                {{ auction.title_image }}
+                {% endif %}
             </div>
             <div class="name">{{ auction.name }}</div>
             <div class="container_about">{{ auction.about }}</div>
@@ -34,9 +25,8 @@ You must be logged in to use all features.
             </div>
             <a href="{% url 'auction' auction.id %}">view details</a>
         </div>
-        {% endfor %}
-    {% else %}
-        Oops... Auctions have not yet been created...
-    {% endif %}
+        {% empty %}
+        Oops... You don't created any auction...
+        {% endfor %}     
     </div>
 {% endblock %}

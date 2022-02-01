@@ -1,0 +1,47 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+{% if user.is_authenticated %}
+
+
+
+<h4>This is an auction for  "{{ auction.name }}"!!!</h4>
+<div>
+    Current price: {{ auction.price }}$
+</div>
+<div>
+    Current leader: {{ current_price.author_bid }}
+</div>
+
+        {% if auction.status %}
+        <form  method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Add my price" class="btn btn-primary">
+        </form>
+        {% else %}
+        Auction is closed.
+        {% endif %}
+
+        <form action="{% url 'auction' auction.id %}">
+        <input type="submit" value="Back to auction" class="btn btn-primary">
+        </form>
+
+<br>
+<br>
+<div>
+    <h6>Price history:</h6>
+{% for bid in allbid %}
+    <div>
+        New price:{{ bid.price_bid }}$. Author {{bid.author_bid}}, created: {{ bid.created_date_bid }}
+    </div>
+{% empty %}
+There are no bids on this auction.
+{% endfor %}
+
+
+
+{% else %}
+You must be logged in!!!
+{% endif %}
+{% endblock %}
+</div>

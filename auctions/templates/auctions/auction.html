@@ -1,8 +1,10 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-
-
+<div>{% if auction.image %} 
+    <img src="{{ auction.image.url }}" style="max-height: 600px; max-width: 600px; " alt="{{ auction.title_image }}">
+    {% endif %}
+</div>
 <div class="name">{{ auction.name}}</div>
 <div>Category: <a href="{% url 'categorysearch' auction.category %}">{{ auction.category}}</a></div>
 <div>About: {{ auction.about}}</div>
@@ -10,21 +12,49 @@
 <div>Created {{ auction.created_date}}</div>
 <div class="author">By {{ auction.author}}</div>
 <div>Status: {% if auction.status %}
-    <div class="active">Active</div>
+    <a href="{% url 'index' %}" class="active"> Active</a>
     {% else %}
-    <div class="deactive">Deactive</div>
+    <a href="{% url 'deactive' %}" class="deactive"> Deactive</a>
     {% endif %}
 </div>
 {% if user.is_authenticated %}
-<form  action="{% url 'addtowatchlist' auction.id %}">
-    <input type="submit" value="Add for my watchlist" class="btn btn-primary" name="q1">
-</form>
-{% else %}
-{% endif %}
-
-<form action="{% url 'addcomment' auction.id %}">
+<div class="action_button">
+    <div class="btn">
+    <form action="{% url 'addcomment' auction.id %}">
     <input type="submit" value="Add new comment" class="btn btn-primary">
-</form>
+    </form>
+    </div>
+
+    <div class="btn">
+    {% if flag %}
+    <form  action="{% url 'addtowatchlist' auction.id %}">
+    <input type="submit" value="Delete from my watchlist" class="btn btn-primary">
+    </form>
+    {% else %}
+    <form  action="{% url 'addtowatchlist' auction.id %}">
+    <input type="submit" value="Add to my watchlist" class="btn btn-primary">
+    </form>
+    {% endif %}
+    </div>
+
+    <div class="btn">
+    {% if auction.author == request.user %}
+    <form action="{% url 'changestatus' auction.id %}">
+    <input type="submit" value="Change status" class="btn btn-primary">
+    </form>
+    {% else %}
+    {% endif %}
+    </div>
+
+    <div class="btn">
+    <form  action="{% url 'addbid' auction.id %}">
+    <input type="submit" value="Go to auction!!!" class="btn btn-primary">
+    </form>
+    </div>
+</div>
+{% else %}
+For more action you need to be logged in.
+{% endif %}
 
 {% if auction_comment %}
     Comments:

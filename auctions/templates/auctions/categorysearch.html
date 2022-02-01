@@ -1,21 +1,27 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<h4>Active listings in category {{ name }}</h4>
+<h4>Active listings in category {{ name }}:</h4>
     <div class="con_group">   
     {% if auctions %}
         {% for auction in auctions %}
         
         <div class="container">
+            <div style="text-align: center;">{% if auction.image %} 
+                <img src="{{ auction.image.url }}" style="max-height:250px; max-width:290px; padding:2px;" alt="{{ auction.title_image }}">
+                {% else %}
+                {{ auction.title_image }}
+                {% endif %}
+                </div>
             <div class="name">{{ auction.name }}</div>
             <div class="container_about">{{ auction.about }}</div>
-            <div class="price">{{ auction.price }}$</div>
+            <div class="price">Price{{ auction.price }}$</div>
             <div>Created {{ auction.created_date }}</div>
             <a href="{% url 'auction' auction.id %}">view details</a>
             <div>Status: {% if auction.status %}
-                <div class="active">Active</div>
+                <a href="{% url 'index' %}" class="active"> Active</a>
                 {% else %}
-                <div class="deactive">Deactive</div>
+                <a href="{% url 'deactive' %}" class="deactive"> Deactive</a>
                 {% endif %}
             </div>
         </div>
